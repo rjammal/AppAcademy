@@ -75,6 +75,7 @@ class Fixnum
       if tens_and_ones == "zero"
         tens_and_ones = ""
       end
+      show_hundred = hundred.empty? ? "" : " hundred"
       "#{hundred}#{" hundred" unless hundred.empty?}#{" " unless tens_and_ones.empty?}#{tens_and_ones}#{" " + big_modifiers[level] if level > 0}"
     else
       thousands_and_up = num_str[0...-3].to_i
