@@ -113,8 +113,6 @@ class ComputerPlayer < Player
     @secret_word = get_dictionary.sample    
     generate_underscores(@secret_word.length)
   end
-    
-  
   
   # methods for computer guesser
   
@@ -167,8 +165,7 @@ class ComputerPlayer < Player
     def get_dictionary
       File.readlines("dictionary.txt").map(&:chomp)
     end
-  
-  
+    
     def test_handle_positions
       load_words_of_length(6)
       handle_positions("a", [1,3])
