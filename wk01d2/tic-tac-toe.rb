@@ -1,4 +1,5 @@
-
+#did not test for tie game
+#woiuld be better to iterate each row after each move
 class Board
   
   def initialize
@@ -119,10 +120,16 @@ class HumanPlayer < Player
   def move(board)
     puts "Please enter the row number:"
     row = gets.chomp
-   # if row > 2 || row < 0
-    #  puts "sorry wrong number"
+    if row > 2 || row < 0
+      puts "sorry wrong number"
+      self.move(board)
+    end
     puts "Please enter the column:"
     col = gets.chomp
+    if row > 2 || row < 0
+      puts "sorry wrong number"
+      self.move(board)
+    end
     [row, col]
   end
   
