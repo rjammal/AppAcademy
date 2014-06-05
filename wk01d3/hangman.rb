@@ -46,9 +46,6 @@ class Player
     @name
   end
   
-  def get_dictionary
-    File.readlines("dictionary.txt").map(&:chomp)
-  end
   
   def generate_underscores(num)
     result = ""
@@ -62,14 +59,15 @@ class HumanPlayer < Player
   #Methods for human checker
    
   def initialize_output
-    puts "Please enter the length of your word."
-    input_length = gets.chomp
-    if !(input_length =~ /^\d+$/)
-      puts "That's not a valid word length. Enter an integer."
-      initialize_output
-    else 
-      generate_underscores(input_length.to_i)
+    begin
+      puts "Please enter the length of your word."
+      input_length = Integer(gets.chomp)
+    rescue => error
+      puts error
+      retry
     end
+    
+    generate_underscores(input_length)
   end
   
   def answer_to_guess(guess_input)
@@ -110,31 +108,19 @@ end
 
 class ComputerPlayer < Player
   
-  def load_words_of_length(length)
-    @dictionary = get_dictionary.select {|word| word.length == length}
-  end
-  
   # methods for checking
   def initialize_output
     @secret_word = get_dictionary.sample    
     generate_underscores(@secret_word.length)
   end
     
-  def answer_to_guess(guess_input)
-    result = []
-    @secret_word.split("").each_with_index do |char, i|
-      if guess_input == char
-        result << i
-      end
-    end
-    result
-  end
+  
   
   # methods for computer guesser
-  # def guess(previous_guesses)
-  #   not_yet_guessed = ('a'..'z').to_a.select {|char| !previous_guesses.include?(char)}
-  #   not_yet_guessed.sample
-  # end
+  
+  def load_words_of_length(length)
+    @dictionary = get_dictionary.select {|word| word.length == length}
+  end
   
   def handle_positions(guess, positions)
     if positions.empty?
@@ -166,12 +152,29 @@ class ComputerPlayer < Player
     result
   end
   
-  def test_handle_positions
-    load_words_of_length(6)
-    handle_positions("a", [1,3])
-    p @dictionary
-    handle_positions("n", [])
-    p @dictionary
-  end  
+  def answer_to_guess(guess_input)
+    result = []
+    @secret_word.split("").each_with_index do |char, i|
+      if guess_input == char
+        result << i
+      end
+    end
+    result
+  end
+  
+  private
+  
+    def get_dictionary
+      File.readlines("dictionary.txt").map(&:chomp)
+    end
+  
+  
+    def test_handle_positions
+      load_words_of_length(6)
+      handle_positions("a", [1,3])
+      p @dictionary
+      handle_positions("n", [])
+      p @dictionary
+    end  
 end
 
