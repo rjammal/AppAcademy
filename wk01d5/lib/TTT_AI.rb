@@ -1,5 +1,4 @@
 require_relative 'TTT'
-require "debugger"
 
 
 class TicTacToeNode
@@ -33,15 +32,15 @@ class TicTacToeNode
   end
   
   def losing_node?(player)
-    
+        
     if @board.over?
-      return @board.winner != player
+      return !@board.winner.nil? && @board.winner != player
     end
     loser_children = children.all? { |child| child.losing_node?(player) }
     return true if @next_mover_mark == player && loser_children
     any_child_loses = children.any? { |child| 
-      puts "child is #{child} and child losing is #{child.losing_node?(player)}"
-      child.losing_node?(player) }
+      child.losing_node?(player) 
+    }
     @next_mover_mark != player && any_child_loses
     
   end
@@ -58,9 +57,6 @@ class TicTacToeNode
     @next_mover_mark != player && all_children_win
   end
       
-  def new_one(ka)
-    puts ka "YES! we win"
-  end
 end
 
 class SuperComputerPlayer < ComputerPlayer
