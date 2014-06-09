@@ -1,7 +1,7 @@
 require 'rspec'
-require 'spec_helper.rb'
-require 'TTT.rb'
-require 'TTT_AI.rb'
+require 'spec_helper'
+require 'TTT'
+require'TTT_AI'
 #your file ^^^^^^^^^^ goes here
 
 
@@ -25,6 +25,10 @@ describe TicTacToeNode do
     end
 
     it "all their marks' are the opposite of their parents'" do
+      # p empty_board_node.board.rows
+      # p empty_board_node.children.all? do |kid|
+      #   kid.next_mover_mark == :o
+      # end
       expect(empty_board_node.children.all? do |kid|
         kid.next_mover_mark == :o
       end).to be_true

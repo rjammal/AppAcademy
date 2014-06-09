@@ -1,7 +1,7 @@
 require 'rspec'
-require 'spec_helper.rb'
-require 'TTT.rb'
-require 'TTT_AI.rb'
+require_relative 'spec_helper'
+require 'TTT'
+require 'TTT_AI'
 
 describe SuperComputerPlayer do
   subject { SuperComputerPlayer.new }
