@@ -1,64 +1,81 @@
+#!/usr/bin/env ruby
+# -*- coding: UTF-8 -*-
+
 require 'debugger'
 require 'time'
 require 'yaml'
 
+ROW = 30
 class Tile
+  VALUE_HASH = { 1 => "1️⃣", 
+          2 => "2️⃣",
+          3 => "3️⃣",
+          4 => "4️⃣",
+          5 => "5️⃣",
+          6 => "6️⃣",
+          7 => "7️⃣",
+          8 => "8️⃣"}
   
-  attr_accessor :flag, :revealed, :mine, :value, :cursor
+  # it's position and the Grid, then the tile itself can find the neighbors.
+  # #neighbors
+  # #num_adjacent_bombs
+  
+  # Name: #num_adjacent_bombs
+  attr_accessor :flag, :revealed, :mine, :adj_bombs, :cursor
   
   def initialize
     @flag = false
     @revealed = false
     @mine = false
-    @value = 0
+    @adj_bombs = 0
     @cursor = false
   end
-
+  
   def to_s
-    return "# " if @cursor
-    return "F " if @flag 
-    if @revealed
-      return "* " if @mine
-      return "  " if @value == 0
-      return @value.to_s + " "
+    result = ''
+    if @flag 
+      result = "🚩"
+    elsif @revealed
+      result = VALUE_HASH[@adj_bombs]
+      result = "◻️" if @adj_bombs == 0
+      result = "💣" if @mine
+    else
+      result = "◼️" 
     end
-    return "[]"
+    return " " + result if @cursor
+    result + " "
   end
 end
 
 class Board
   attr_accessor :rows
-  def initialize(bombs = 10)
-    @rows = Array.new(9) {Array.new(9) {Tile.new} }
+  def initialize(bombs)
+    @rows = Array.new(ROW) {Array.new(ROW) {Tile.new} }
     until bombs == 0
-      tile = @rows[rand(9)][rand(9)]
+      tile = @rows[rand(ROW)][rand(ROW)]
       next if tile.mine
       tile.mine = true
       bombs -= 1
     end
     @rows.each_with_index do |row, x|
       row.each_with_index do |tile, y|
-        tile.value = neighbors_bomb_count(x, y)
+        tile.adj_bombs = neighbors_bomb_count(x, y)
       end
     end
   end
+  
+  # def []
   
   def neighbors(x, y)
     result = []
     result_check = ["+", "-"]
     num = [1,0]
-    
-    result_check.each do |x_op|
-      result_check.each do |y_op|
-        num.each do |x_dif|
-          num.each do |y_dif|
-            next if y_dif == 0 && x_dif == 0
-            result << [eval("#{x} #{x_op} #{x_dif}"), eval("#{y} #{y_op} #{y_dif}")]
-          end
-        end
-      end
+    pairs = (-1..1).to_a.product((-1..1).to_a)
+    pairs = pairs.reject { |pair| pair == [0,0] }
+    pairs.each do |pair|  
+      result << [pair[0] + x, pair[1] + y]
     end
-    result.uniq.select { |pos| pos[0] >= 0 && pos[0] < 9 && pos[1] >= 0 && pos[1] < 9  }
+    result.select { |pos| pos[0] >= 0 && pos[0] < ROW && pos[1] >= 0 && pos[1] < ROW  }
   end
   
   def neighbors_bomb_count(x, y)
@@ -74,7 +91,7 @@ end
 
 class Game
   
-  def initialize(num_bombs = 10)
+  def initialize(num_bombs  = (ROW / 3) ** 2 )
     @board = Board.new(num_bombs)
     @time = 0
     @x = 0
@@ -120,7 +137,7 @@ class Game
   def reveal(x, y)
     tile = get_tile(x, y)
     tile.revealed = true
-    if tile.value == 0
+    if tile.adj_bombs == 0
       @board.neighbors(x, y).each do |pos|
         reveal(pos[0], pos[1]) unless get_tile(pos[0], pos[1]).revealed
       end
@@ -148,9 +165,9 @@ class Game
     when "a"
       @x -= 1 unless @x == 0
     when "s"
-      @y += 1 unless @y == 8
+      @y += 1 unless @y == ROW - 1
     when "d"
-      @x += 1 unless @x == 8
+      @x += 1 unless @x == ROW - 1
     when "w"
       @y -= 1 unless @y == 0
     when "f"
@@ -159,7 +176,6 @@ class Game
       return "R"
     when "c"
       return "c"
-      
     end
     cursor
   end
@@ -198,4 +214,10 @@ class Game
     display
     puts "#{finish} in #{total_time} seconds"
   end
+end
+
+# Make this runnable as  script. Use the special: "#!/..." at the start.
+if __FILE__ == $PROGRAM_NAME
+  g = Game.new
+  g.play
 end
