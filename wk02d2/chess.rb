@@ -244,24 +244,12 @@ class King < SteppingPiece
       (1..3).each do |xcoord| #checking if path is clear
         return false if board[xcoord, rook.y]
       end
-      # boardcopy = board.deep_dup
-      # king_copy = boardcopy[x, y]
-      # king_copy.move(x - 1, y)
-      # if boardcopy.in_check?(color) #don't move through check
-      #   return false
-      # end
       
     end
     if rook.x == 7
       (5..6).each do |xcoord|
         return false if board[xcoord, rook.y]
       end
-      # boardcopy = board.deep_dup
-      # king_copy = boardcopy[x, y]
-      # king_copy.move(x + 1, y)
-      # if boardcopy.in_check?(color)
-      #   return false
-      # end
       
     end
     true
