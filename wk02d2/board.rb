@@ -126,7 +126,7 @@ class Board
     elsif square.color != color
       raise ArgumentError.new "That's not your piece!"
     elsif !square.moves.include?(end_pos)
-      raise ArgumentError.new "#{end_pos} is not a valid move"
+      raise ArgumentError.new "Not a valid move"
       
     else
       dupboard = deep_dup
@@ -138,7 +138,7 @@ class Board
     end
   end
   
-  def checkmate(color)
+  def checkmate?(color)
     grid.each do |row|
       row.each do |tile|
         next if tile.nil? || tile.color != color
@@ -158,16 +158,16 @@ class Board
 
   
   def to_s
-    result = "\n  0  1  2  3  4  5  6  7 \n"
+    result = "\n  a  b  c  d  e  f  g  h \n"
     grid.each_with_index do |row, i|
-      result << i.to_s
+      result << (i + 1).to_s
       row.each do |piece|
         piece ||= " "
         result << " #{piece} "
       end
-      result << "#{i}\n"
+      result << "#{i + 1}\n"
     end
-    result + "  0  1  2  3  4  5  6  7 "
+    result + "  a  b  c  d  e  f  g  h "
   end
   
   
