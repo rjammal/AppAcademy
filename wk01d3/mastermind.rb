@@ -7,11 +7,15 @@ class Game
     guess = ""
     puts "Please guess a sequence of four colors. Your choices are 'R' for Red, 'G' for Green, 'B' for Blue, 'Y' for Yellow, 'O' for Orange, and 'P' for Purple."
     puts "Example: RGBY"
+    
     while guess != @answer && num_guesses < 10
-      guess = gets.chomp
-      if !valid(guess)
-        puts "Please enter a valid guess."
-        next
+      begin
+        guess = gets.chomp
+        valid(guess)
+      rescue ArgumentError => e
+        puts "#{guess} is not a valid input"
+        puts "Error was: #{e.message}"
+        retry
       end
       num_guesses += 1
       puts exact_matches(guess)
@@ -55,9 +59,9 @@ class Game
   
   def valid(guess)
     if guess.length != 4
-      return false
+      raise ArgumentError.new "Length needs to be 4"
     end
-    guess.each_char { |char| return false if !COLORS.include?(char) }
+    guess.each_char { |char| raise ArgumentError.new "not valid color" if !COLORS.include?(char) }
     true
   end
 end
