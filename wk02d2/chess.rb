@@ -166,8 +166,20 @@ class Knight < SteppingPiece
 end
 
 class Rook < SlidingPiece
+  attr_accessor :moved
+  
+  def initialize(color, board, x, y)
+    @moved = false
+    super
+  end
+  
   def moves
     super(true, false) #true for orthogonal, false for diagonal 
+  end
+  
+  def move(new_x, new_y)
+    super
+    @moved = true
   end
 end
 
@@ -185,9 +197,74 @@ end
 
 class King < SteppingPiece
   
+  attr_accessor :moved
+  
+  def initialize(color, board, x, y)
+    @moved = false
+    super
+  end
+  
+  def move(new_x, new_y)
+    if new_x - x == 2
+      rook = board[7, y]
+      rook.move(5, y)
+    elsif new_x - x == -2
+      rook = board[0, y]
+      rook.move(3, y)
+    end
+    super
+    @moved = true
+  end
+  
   def moves
+    p "checkpoint king moves"
     deltas = (-1..1).to_a.product((-1..1).to_a).reject {|pair| pair == [0, 0]}
-    super(deltas)
+    result = super(deltas)
+    
+    rooks = board.get_pieces(color).select { |piece| piece.is_a?(Rook) }
+    rooks.each do |rook|
+      if castle?(rook)
+        if rook.x == 0
+          result << [2, self.y]
+        elsif rook.x == 7
+          result << [6, self.y]
+        end
+      end
+    end
+     
+    
+    result
+  end
+  
+  def castle?(rook)
+    if moved || rook.moved || board.in_check?(color)
+      return false
+    end
+    if rook.x == 0 #left rook
+      (1..3).each do |xcoord| #checking if path is clear
+        return false if board[xcoord, rook.y]
+      end
+      # boardcopy = board.deep_dup
+      # king_copy = boardcopy[x, y]
+      # king_copy.move(x - 1, y)
+      # if boardcopy.in_check?(color) #don't move through check
+      #   return false
+      # end
+      
+    end
+    if rook.x == 7
+      (5..6).each do |xcoord|
+        return false if board[xcoord, rook.y]
+      end
+      # boardcopy = board.deep_dup
+      # king_copy = boardcopy[x, y]
+      # king_copy.move(x + 1, y)
+      # if boardcopy.in_check?(color)
+      #   return false
+      # end
+      
+    end
+    true
   end
   
 end

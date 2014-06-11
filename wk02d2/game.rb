@@ -1,6 +1,11 @@
 require './board.rb'
 
+
+
 class Game
+  
+  attr_reader :board
+  
   def initialize(white_player, black_player)
     @white_player = white_player
     @black_player = black_player

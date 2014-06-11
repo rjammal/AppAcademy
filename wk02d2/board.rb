@@ -1,3 +1,4 @@
+# encoding: utf-8
 require './chess.rb'
 
 class InCheckException < Exception
@@ -56,45 +57,26 @@ class Board
     end
   end
   
-  def find_pos(piece)
-    grid.each_with_index do |row, y|
-      row.each_with_index do |board_piece, x|
-        if piece == board_piece
-          return [x,y]
-        end
-      end
-    end
-    
-    raise ArgumentError.new "That piece isn't on the board"
+  def get_pieces(color)
+    grid.flatten.compact.select { |piece| piece.color == color }
   end
   
   def in_check?(color)
-    white_threats = []
-    black_threats = []
-    white_king_pos = nil
-    black_king_pos = nil
-    grid.each_with_index do |row, y|
-      row.each_with_index do |board_piece, x|
-        next unless board_piece
-        if board_piece.color == :white
-          white_threats << board_piece
-          white_king_pos = [x, y] if board_piece.class == King
-        elsif board_piece.color == :black
-          black_threats << board_piece
-          black_king_pos = [x, y] if board_piece.class == King
-        end
-        
-      end
-    end
     
     
     if color == :white
+      black_threats = get_pieces(:black)
+      white_king = get_pieces(:white).select { |piece| piece.is_a?(King) }[0]
+      white_king_pos = [white_king.x, white_king.y]
       black_threats.each do |piece|
         if piece.moves.include?(white_king_pos)
           return true
         end
       end
     elsif color == :black
+      white_threats = get_pieces(:white)
+      black_king = get_pieces(:black).select { |piece| piece.is_a?(King) }[0]
+      black_king_pos = [black_king.x, black_king.y]
       white_threats.each do |piece|
         if piece.moves.include?(black_king_pos)
           return true
