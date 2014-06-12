@@ -3,9 +3,15 @@ require 'colorize'
 
 class CheckersBoard
 
+  attr_accessor :grid
+
+  def blank_grid
+    Array.new(8) {Array.new(8)}
+  end
+
   def initialize
     start_rows = {black: (0..2), red: (5..7)}
-    @grid = Array.new(8) {Array.new(8)}
+    @grid = blank_grid
 
     start_rows.each do |color, rows|
       rows.each do |y|
@@ -30,17 +36,35 @@ class CheckersBoard
     self[x, y].nil?
   end
 
-  def to_s
-    result = "\n  0  1  2  3  4  5  6  7 \n"
-    @grid.each_with_index do |row, y|
-      result << y.to_s
-      row.each do |tile|
-        tile ||= " "
-        result << " #{tile} "
-      end
-      result << "#{y}\n"
+  def dup
+    b = CheckersBoard.new
+    b.grid = blank_grid
+    grid.flatten.compact.each do |piece|
+      b[piece.x, piece.y] = piece.dup(b)
     end
-    result + "  0  1  2  3  4  5  6  7 \n"
+    b
+  end
+
+  def get_pieces(color)
+    grid.flatten.compact.select { |piece| piece.color == color }
+  end
+
+
+  def to_s
+    result = "\n  1  2  3  4  5  6  7  8 \n"
+    @grid.each_with_index do |row, y|
+      result << (y + 1).to_s
+      row.each_with_index do |tile, x|
+        tile ||= " "
+        if (x + y).even?
+          result << " #{tile} ".on_black
+        else
+          result << " #{tile} ".on_red
+        end
+      end
+      result << "#{y + 1}\n"
+    end
+    result + "  1  2  3  4  5  6  7  8 \n"
   end
 
 end

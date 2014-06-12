@@ -1,6 +1,12 @@
+# encoding: utf-8
+
 require './checkers_board.rb'
+require 'colorize'
 
 class OffBoardException < Exception
+end
+
+class InvalidMoveError < StandardError
 end
 
 class CheckersPiece
@@ -41,15 +47,53 @@ class CheckersPiece
     end
   end
 
+  def perform_moves!(move_arr)
+    move_arr.each do |move|
+      fail_string = "Cannot move from #{x}, #{y} to #{move_arr[0]}, #{move_arr[1]}."
+      if move_arr.length > 1
+        unless perform_jump(*move)
+          raise InvalidMoveError.new fail_string
+        end
+      else
+        unless perform_jump(*move) || perform_slide(*move)
+          raise InvalidMoveError.new fail_string
+        end
+      end
+    end
+  end
+
+  def valid_move_seq?(move_arr)
+    board_dup = board.dup
+    piece_copy = board_dup[x, y]
+    begin
+      piece_copy.perform_moves!(move_arr)
+    rescue InvalidMoveError
+      return false
+    end
+    true
+  end
+
+  def perform_moves(move_arr)
+    if valid_move_seq?(move_arr)
+      perform_moves!(move_arr)
+    else
+      raise InvalidMoveError.new "That is an invalid sequence of moves."
+    end
+  end
+
   def maybe_promote
     if y == BACK_ROW[color]
       @king = true
     end
   end
 
+  def dup(new_board)
+    CheckersPiece.new(x, y, color, new_board, king)
+  end
+
   def to_s
-    piece_symbols = {red: "r", black: "b"}
-    king_symbols = {red: "R", black: "B"}
+    king_symbols = {red: "✪".red, black: "✪".white}
+    piece_symbols = {red: "●".red, black: "◯".white}
     if king
       king_symbols[color]
     else
