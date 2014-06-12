@@ -29,7 +29,11 @@ class Piece
   end
   
   def dup(boardcopy)
-    self.class.new(color, boardcopy, x, y)
+    result = self.class.new(color, boardcopy, x, y)
+    if @moved
+      result.moved = @moved
+    end
+    result
   end
   
   def to_s
@@ -217,7 +221,6 @@ class King < SteppingPiece
   end
   
   def moves
-    p "checkpoint king moves"
     deltas = (-1..1).to_a.product((-1..1).to_a).reject {|pair| pair == [0, 0]}
     result = super(deltas)
     
@@ -237,7 +240,7 @@ class King < SteppingPiece
   end
   
   def castle?(rook)
-    if moved || rook.moved || board.in_check?(color)
+    if moved || rook.moved
       return false
     end
     if rook.x == 0 #left rook

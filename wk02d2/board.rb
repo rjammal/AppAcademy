@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'colorize'
 require './chess.rb'
 
 class InCheckException < Exception
@@ -45,7 +46,7 @@ class Board
     if (0...8).include?(x) && (0...8).include?(y)
       grid[y][x] = value
     else
-      raise ArgumentError "#{x},#{y} is not on the board."
+      raise ArgumentError.new "#{x},#{y} is not on the board."
     end
   end
   
@@ -53,7 +54,7 @@ class Board
     if (0...8).include?(x) && (0...8).include?(y)
       grid[y][x]
     else
-      raise ArgumentError "#{x},#{y} is not on the board."
+      raise ArgumentError.new "#{x},#{y} is not on the board."
     end
   end
   
@@ -143,9 +144,10 @@ class Board
     result = "\n  a  b  c  d  e  f  g  h \n"
     grid.each_with_index do |row, i|
       result << (i + 1).to_s
-      row.each do |piece|
+      row.each_with_index do |piece, i2|
         piece ||= " "
-        result << " #{piece} "
+        result << " #{piece} ".on_light_green if (i + i2) % 2 == 0 
+        result << " #{piece} " if (i + i2) % 2 == 1 
       end
       result << "#{i + 1}\n"
     end

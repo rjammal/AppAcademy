@@ -6,7 +6,7 @@ class Game
   
   attr_reader :board
   
-  def initialize(white_player, black_player)
+  def initialize(white_player = Player.new, black_player = Player.new)
     @white_player = white_player
     @black_player = black_player
     @whites_turn = true
@@ -49,11 +49,38 @@ class Game
       else
         @black_player.move(@board, :black)
       end
+      check_pawn_promotion(turn.to_sym)
       @whites_turn = !@whites_turn
     end
     puts @board.to_s
     puts "That's checkmate. #{winner.to_s.capitalize} is the winner! "
   end
+  
+  def check_pawn_promotion(color)
+    class_hash = {"queen" => Queen, "rook" => Rook, "bishop" => Bishop, "knight" => Knight}
+    
+    pawns = @board.get_pieces(color).select { |piece| piece.is_a?(Pawn) }
+    pawns.each do |pawn|
+      if (color == :white && pawn.y == 0) || (color == :black && pawn.y == 7)
+        puts "Pawn can be promoted!"
+        
+        begin
+          puts "Please enter 'queen', 'rook', 'bishop', or 'knight'."
+          new_piece = gets.chomp.downcase
+          if !class_hash.keys.include?(new_piece)
+            raise ArgumentError.new "That's not a valid promotion."
+          end
+          @board[pawn.x, pawn.y] = class_hash[new_piece].new(pawn.color, @board, pawn.x, pawn.y)
+        rescue ArgumentError => e
+          puts e.message
+          puts "Please try again."
+          retry
+        end
+      end
+         
+    end 
+  end
+
 end
 
 
@@ -89,7 +116,7 @@ class Player
       elsif !("1".."8").include?(raw[1])
         raise ArgumentError.new "The second character should be a number from 1 to 8"
       end
-      raw[0] = x_hash[raw[0]]
+      raw[0] = x_hash[raw[0].downcase]
       raw[1] = raw[1].to_i - 1
       raw
     rescue ArgumentError => e
