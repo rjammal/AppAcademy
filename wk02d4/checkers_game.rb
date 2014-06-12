@@ -10,13 +10,14 @@ end
 class CheckersGame
 
   attr_accessor :turn
-  attr_reader :red, :black, :board
+  attr_reader :red, :black, :board, :force_jumps
 
-  def initialize(player1 = Player.new, player2 = Player.new)
+  def initialize(force_jumps = true, player1 = Player.new, player2 = Player.new)
     @red = player1
     @black = player2
     @turn = :red
     @board = CheckersBoard.new
+    @force_jumps = force_jumps
   end
 
   def play
@@ -39,10 +40,15 @@ class CheckersGame
           chain_moves = gets.chomp.downcase
         end
         piece = board[*start_pos]
-        piece.perform_moves(move_seq)
+        piece.perform_moves(move_seq, force_jumps)
       rescue InvalidMoveError => e
         puts e.message
         puts "Please try another move."
+        retry
+      rescue NotAJumpException => e
+        puts "Force jumps are enabled."
+        puts e.message
+        puts "Please select a move that jumps another piece."
         retry
       end
       if turn == :red 

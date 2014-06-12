@@ -49,6 +49,15 @@ class CheckersBoard
     grid.flatten.compact.select { |piece| piece.color == color }
   end
 
+  def jump_possible?(color)
+    get_pieces(color).each do |piece|
+      if piece.valid_jumps.length > 0
+        return true
+      end
+    end
+    false
+  end
+
 
   def to_s
     result = "\n  1  2  3  4  5  6  7  8 \n"

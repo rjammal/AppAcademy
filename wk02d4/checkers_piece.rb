@@ -9,6 +9,9 @@ end
 class InvalidMoveError < StandardError
 end
 
+class NotAJumpException < Exception 
+end 
+
 class CheckersPiece
 
   BACK_ROW = {red: 0, black: 7}
@@ -73,8 +76,11 @@ class CheckersPiece
     true
   end
 
-  def perform_moves(move_arr)
+  def perform_moves(move_arr, force_jump)
     if valid_move_seq?(move_arr)
+      if force_jump && board.jump_possible?(color) && (move_arr[0][0] - x).abs < 2
+        raise NotAJumpException.new "You have an available jump you can make."
+      end
       perform_moves!(move_arr)
     else
       raise InvalidMoveError.new "That is an invalid sequence of moves."
