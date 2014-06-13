@@ -5,10 +5,6 @@ class CheckersBoard
 
   attr_accessor :grid
 
-  def blank_grid
-    Array.new(8) {Array.new(8)}
-  end
-
   def initialize
     start_rows = {black: (0..2), red: (5..7)}
     @grid = blank_grid
@@ -74,6 +70,12 @@ class CheckersBoard
       result << "#{y + 1}\n"
     end
     result + "  1  2  3  4  5  6  7  8 \n"
+  end
+
+  private
+
+  def blank_grid
+    Array.new(8) {Array.new(8)}
   end
 
 end

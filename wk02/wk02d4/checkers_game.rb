@@ -61,6 +61,12 @@ class CheckersGame
     puts "Congratulations, #{winner} player! You win!"
   end
 
+  private
+
+  def blank_grid
+    Array.new(8) {Array.new(8)}
+  end
+
   def validate_start
     begin
       start_pos = validate_input
@@ -92,6 +98,7 @@ class CheckersGame
     rescue ArgumentError, OffBoardException => e
       puts e.message
       puts "Please enter another coordinate."
+      raw = nil
       retry
     end
   end
