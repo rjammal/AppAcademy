@@ -81,7 +81,7 @@ class Hand
   protected
   
   def hand_score
-    HAND_SCORES.each_with_index do |method,i|
+    HAND_SCORES.each_with_index do |method, i|
       return i if self.send(method)
     end
     8
@@ -89,6 +89,7 @@ class Hand
   
   def high_card
     values = @cards.map(&:value)
+    # for the A-5 straight, the high card is the 5, not the ace
     if values.sort == [0, 1, 2, 3, 12]
       3
     else
