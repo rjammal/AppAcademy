@@ -4,7 +4,6 @@ require './Saveable'
 
 class Reply
   include Saveable
-  TABLE = "whatever"
   
   def self.find_by_id(id)
     db = QuestionsDatabase.instance

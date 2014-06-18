@@ -4,7 +4,6 @@ require 'active_support/inflector'
 module Saveable
   def save
     db = QuestionsDatabase.instance
-    # execute_string = 
     vars = self.instance_variables
     # removing the leading @
     ivar_names = vars.map { |method| method[1..-1] }
@@ -12,7 +11,7 @@ module Saveable
 
     ivar_values = ivar_names.map { |iname| self.send(iname) }
     
-    table_name = self.class.to_s.downcase.pluralize
+    table_name = self.class.to_s.underscore.pluralize
     
     if @id.nil?
       db.execute(<<-SQL, *ivar_values)

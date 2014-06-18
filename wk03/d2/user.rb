@@ -8,7 +8,6 @@ require './Saveable'
 
 class User
   include Saveable
-  TABLE = "whatever"
   
   def self.find_by_id(id)
     db = QuestionsDatabase.instance
