@@ -15,4 +15,8 @@ class Tagging < ActiveRecord::Base
     foreign_key: :short_url_id,
     class_name: 'ShortenedURL'
   )
+
+  def self.create_from_tag_and_url!(tag, url)
+    create!(tag_topic_id: tag.id, short_url_id: url.id)
+  end
 end

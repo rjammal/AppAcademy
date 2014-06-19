@@ -15,16 +15,26 @@ class TagTopic < ActiveRecord::Base
     source: :short_url
   )
   
-  has_many(
-    :visits, 
-    through: :taggings, 
-    source: :short_url
-  )
-  
-  def most_popular
+  def most_popular_urls
 
-    ShortenedURL.find_by_sql(<=SQL
-    SELECT * FROM tag_topics
+    ShortenedURL.find_by_sql(<<-SQL
+    SELECT 
+      url.long_url, COUNT(*) num_visits 
+    FROM 
+      tag_topics topics
+    JOIN 
+      taggings tags ON tags.tag_topic_id = topics.id
+    JOIN 
+      shortened_urls url ON url.id = tags.short_url_id
+    JOIN 
+      visits visit ON visit.short_url_id = url.id
+    WHERE 
+      topics.topic = '#{self.topic}'
+    GROUP BY 
+      url.long_url
+    ORDER BY 
+      num_visits desc
+    LIMIT 5;
     
     SQL
     )
