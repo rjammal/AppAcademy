@@ -39,5 +39,18 @@ class TagTopic < ActiveRecord::Base
     SQL
     )
   end
+
+  def most_popular_urls_active_record
+    popular_urls = TagTopic.joins(shortened_urls: :visits)
+      .where(["tag_topics.topic = ?", self.topic])
+      .group("shortened_urls.long_url")
+      .order("COUNT(*) DESC")
+      .select("tag_topics.*, shortened_urls.long_url AS url, COUNT(*) AS num_visits")
+      .take(5)
+    
+    result = {}
+    popular_urls.each { |tag| result[tag.url] = tag.num_visits }
+    result 
+  end
   
 end

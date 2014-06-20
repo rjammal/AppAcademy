@@ -3,6 +3,8 @@ class ShortenedURL < ActiveRecord::Base
 
   validates :short_url, uniqueness: true
   validates :long_url, :short_url, :submitter_id, presence: true
+  validates :long_url, length: {maximum: 1024}
+  validate :no_spamming_of_url_creation
   
   def self.random_code
     # get first 16 characters
@@ -63,6 +65,16 @@ class ShortenedURL < ActiveRecord::Base
   
   def num_recent_uniques
     visitors.where("visits.created_at > '#{10.minutes.ago}'").count
+  end
+
+  private
+
+  def no_spamming_of_url_creation
+    num_recent = ShortenedURL.where(["created_at > #{1.minute.ago} AND submitter_id = ?", submitter_id])
+      .order("created_at DESC").limit(5).count
+    if num_recent == 5
+      errors[:base] << "You can't submit more than 5 URLs in one minute."
+    end
   end
 
 end
