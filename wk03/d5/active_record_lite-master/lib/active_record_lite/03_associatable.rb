@@ -30,7 +30,7 @@ end
 class HasManyOptions < AssocOptions
   def initialize(name, self_class_name, options = {})
     @name = name
-    @foreign_key = options[:foreign_key] || "#{self_class_name.downcase}_id".to_sym
+    @foreign_key = options[:foreign_key] || "#{self_class_name.underscore}_id".to_sym
     @primary_key = options[:primary_key] || :id
     @class_name = options[:class_name] || name.to_s.singularize.camelcase
   end
@@ -41,7 +41,7 @@ module Associatable
   def belongs_to(name, options = {})
     options = BelongsToOptions.new(name, options)
     assoc_options[name.to_sym] = options
-    define_method name.to_s do
+    define_method name do
       model_class = options.model_class
       target_primary_key_value = self.send(options.foreign_key)
       model_class.where(options.primary_key => target_primary_key_value)[0]
@@ -50,6 +50,7 @@ module Associatable
 
   def has_many(name, options = {})
     options = HasManyOptions.new(name, self.to_s, options)
+    assoc_options[name.to_sym] = options
     define_method name.to_s do 
       model_class = options.model_class
       targets_foreign_key_value = self.send(options.primary_key)
