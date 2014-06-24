@@ -32,14 +32,12 @@ class TwitterSession
   end
   
   def self.path_to_url(path, query_values = nil)
-    url = Addressable::URI.new(
+    Addressable::URI.new(
       scheme: "https", 
       host: "api.twitter.com", 
       path: "1.1/#{path}.json", 
       query_values: query_values
     ).to_s
-    puts url
-    url
   end
   
   def self.get(path, query_values = nil)
@@ -47,7 +45,7 @@ class TwitterSession
   end
   
   def self.post(path, query_values = nil)
-    access_token.post(path_to_url(path, query_values))
+    access_token.post(path_to_url(path, query_values)).body
   end
   
 end

@@ -32,6 +32,7 @@ gem 'addressable'
 group :development do 
   gem 'annotate'
   gem 'pry-rails'
+  gem 'debugger'
 end
 
 # Use ActiveModel has_secure_password
