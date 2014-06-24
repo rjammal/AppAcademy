@@ -1,0 +1,18 @@
+wikipedia:
+
+GET /wiki/Main_Page http/1.1
+Host: en.wikipedia.org
+
+
+
+google:
+
+nc www.google.com 80
+
+GET /gmail/ HTTP/1.1
+Host: google.com
+
+nc maps.googleapis.com 80
+GET /maps/api/geocode/output?address= HTTPS/1.1
+
+
