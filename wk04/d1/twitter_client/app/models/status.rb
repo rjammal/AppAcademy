@@ -3,6 +3,11 @@ require 'open-uri'
 class Status < ActiveRecord::Base
   validates :body, :twitter_status_id, :twitter_user_id, presence: true 
   validates :twitter_status_id, uniqueness: true
+  belongs_to(
+    :user, 
+    primary_key: :twitter_user_id, 
+    foreign_key: :twitter_user_id
+    )
 
   def self.fetch_by_twitter_user_id!(twitter_user_id)
     raw = TwitterSession.get('statuses/user_timeline', user_id: twitter_user_id)
