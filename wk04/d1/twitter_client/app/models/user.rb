@@ -6,6 +6,32 @@ class User < ActiveRecord::Base
     foreign_key: :twitter_user_id
     )
 
+  has_many(
+    :outbound_follows, 
+    primary_key: :twitter_followee_id, 
+    foreign_key: :twitter_user_id, 
+    class_name: "Follow"
+    )
+
+  has_many(
+    :inbound_follows, 
+    primary_key: :twitter_follower_id,
+    foreign_key: :twitter_user_id,
+    class_name: "Follow"
+    )
+
+  has_many(
+    :followers, 
+    through: :inbound_follows, 
+    source: :follower
+    )
+
+  has_many(
+    :followees, 
+    through: :outbound_follows, 
+    source: :followee
+    )
+
   def self.fetch_by_user_name!(name)
     db_users = User.where(screen_name: name.downcase)
     if db_users.empty?
