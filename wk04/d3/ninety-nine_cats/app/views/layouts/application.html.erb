@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NinetyNineCats</title>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<% if flash[:errors] %>
+<p><%= flash[:errors] %></p>
+<% end %>
+<%= yield %>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+<h2>Edit your cat</h2>
+<form action= '<%= cat_url(@cat.id)%>' method= "POST">
+  <input 
+    type="hidden" 
+    name="_method" 
+    value="PATCH">
+  
+  <%= render partial: 'form' %>
+    
+</form>

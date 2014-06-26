@@ -1,0 +1,39 @@
+<table>
+  <thead>
+    <h2> Cat Information </h2> 
+  </thead>
+  
+  <tbody>
+    <tr> 
+      <th align="left"> Name</th>
+      <td><%= @cat.name  %></td>
+    </tr>
+    <tr> 
+      <th align="left">Age</th>
+      <td><%= @cat.age  %></td>
+    </tr>
+    <tr>
+      <th align="left">Birth Date</th>
+      <td><%= @cat.birth_date %></td>
+    </tr>
+    <tr>
+      <th align="left">Color</th>
+      <td><%= @cat.color %></td>
+    </tr>
+    <tr>
+      <th align="left">Sex</th>
+      <td><%= @cat.sex %></td>
+    </tr>
+  </tbody>
+  
+</table>
+
+<h3>Rental Requests</h3>
+<ul>
+  <% @cat.cat_rental_requests.order(:start_date).each_with_index do |rental, i| %>
+    <li>Rental #<%= i + 1 %>:
+        <%= rental.start_date %> to <%= rental.end_date %>:
+        <%= rental.status %>
+    </li>
+  <% end %>
+</ul>

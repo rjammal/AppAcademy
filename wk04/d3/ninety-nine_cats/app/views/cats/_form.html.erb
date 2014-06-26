@@ -1,0 +1,59 @@
+  <input 
+    type='hidden' 
+    name='authenticity_token'
+    value='<%= form_authenticity_token %>'>
+    
+  <label>Name
+    <input 
+      type="text" 
+      name="cat[name]" 
+      value= '<%= @cat.name  %>'>
+  </label>
+  <br>
+  
+  <label>Age
+    <input 
+      type="number" 
+      name="cat[age]"
+      value='<%= @cat.age  %>'>
+  </label>
+  <br>
+  
+  <label>Birth Date
+    <input 
+      type="date" 
+      name="cat[birth_date]" 
+      value='<%= @cat.birth_date  %>'>
+  </label>
+  <br>
+  
+  <label>Color
+    <select name="cat[color]">
+      <option value=''> Choose a color </option>
+      <% Cat::COLORS.each do |color| %>
+        <option 
+          <%= 'selected' if @cat.color == color %> 
+          value='<%= color %>'>
+          <%= color %>
+        </option>
+      <% end %>
+    </select>
+  </label>
+  <br>
+  
+  <label>Male
+    <input type="radio" 
+      name="cat[sex]" 
+      value='M' 
+      <%= 'checked' if @cat.sex == 'M'  %>>
+  </label>
+  
+  <label>Female
+    <input type="radio" 
+      name="cat[sex]" 
+      value='F' 
+      <%= 'checked' if @cat.sex == 'F'  %>>
+  </label>
+  <br>
+  
+  <input type='submit' value='Save'>
