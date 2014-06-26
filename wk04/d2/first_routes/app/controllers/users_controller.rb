@@ -37,7 +37,7 @@ class UsersController < ApplicationController
   def favorites
     render json: Contact.contacts_for_user_id(params[:id])
       .where("(contacts.favorite = ? AND contacts.user_id = ?) OR
-              (share_fave = ? AND contacts.user_id != ?)", 
+              (contact_shares.favorite = ? AND contacts.user_id != ?)", 
               true, params[:id], true, params[:id])
   end
   

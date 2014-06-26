@@ -36,6 +36,5 @@ class Contact < ActiveRecord::Base
       .where("contacts.user_id = (?)
                 OR contact_shares.user_id = (?)", user_id, user_id)
       .distinct
-      .select("contacts.*, contact_shares.favorite as share_fave")
   end
 end
