@@ -1,0 +1,23 @@
+# == Schema Information
+#
+# Table name: pokemons
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  type1      :string(255)
+#  type2      :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  type1: MyString
+  type2: MyString
+
+two:
+  name: MyString
+  type1: MyString
+  type2: MyString

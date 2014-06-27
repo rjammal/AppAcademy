@@ -1,0 +1,58 @@
+Create a new Pokemon
+
+<form action='<%= pokemons_url %>', method ='POST'>
+    
+    <input 
+        type='hidden' 
+        name='authenticity_token' 
+        value='<%= form_authenticity_token %>'
+
+
+    <label for='pokemon_name'>Name</label>
+    <input 
+        id='pokemon_name' 
+        name='pokemon[name]' 
+        value='<%= @pokemon.name %>'>
+    <br>
+
+    <label for='pokemon_type1'>Type 1:</label>
+        <select name='pokemon[type2]' id='pokemon_type1'>
+            <% Pokemon::TYPES.each do |type| %>
+                <option value ='<%= type %>'>
+                    <%= @pokemon.type1 %>
+                </option>
+            <% end %>
+        </select>
+    <br>
+    <br>
+    <label for='pokemon_type2'>Type 2</label>
+        <select name='pokemon[type2]'>
+            <option value=''>No type 2</option>
+            <% Pokemon::TYPES.each do |type| %>
+                <option value ='<%= type %>'>
+                    <%= type %>
+                </option>
+            <% end %>
+        </select>
+    <br>
+
+    <label>Gender-male
+        <input 
+            type='radio' 
+            name='pokemon[gender]' 
+            value='m'>
+    </label>
+    <br>
+    <label>Gender-female
+        <input 
+            type='radio' 
+            name='pokemon[gender]' 
+            value='f'>
+    </label>
+    <br>
+
+    <input 
+        type='submit' 
+        value='Save'>
+
+</form>
