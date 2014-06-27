@@ -3,12 +3,13 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   
   def log_in!(user)
-    user.reset_session_token!
-    session[:session_token] = user.session_token
+    token = SessionToken.create_for_user!(user)
+    session[:session_token] = token.session_token
   end
   
   def log_out!
-    current_user.reset_session_token!
+    token = SessionToken.find_by_session_token(session[:session_token])
+    token.destroy
     session[:session_token] = nil
   end
   

@@ -5,7 +5,6 @@
 #  id              :integer          not null, primary key
 #  user_name       :string(255)      not null
 #  password_digest :string(255)      not null
-#  session_token   :string(255)      not null
 #  created_at      :datetime
 #  updated_at      :datetime
 #
@@ -13,12 +12,12 @@
 class User < ActiveRecord::Base
   attr_reader :password
   validates :user_name, :password_digest, :session_token, presence:true
-  validates :user_name, :session_token, uniqueness: true
   validates :password, length: { minimum: 6, allow_nil: true}
   
   before_validation :ensure_session_token
   has_many :cats
   has_many :cat_rental_requests
+  has_many :session_tokens
   
   def self.find_by_credentials(user_name, password)
     u = User.find_by_user_name(user_name)
@@ -29,7 +28,9 @@ class User < ActiveRecord::Base
   end
   
   def ensure_session_token
-    self.session_token ||= SecureRandom::urlsafe_base64
+    if SessionToken.users_session_tokens(id).empty?
+      SessionToken.create(user_id: id, session_token: SecureRandom::urlsafe_base64)
+    end
   end
   
   
@@ -43,9 +44,9 @@ class User < ActiveRecord::Base
     self.password_digest = BCrypt::Password.create(password)
   end
   
-  def reset_session_token!
-    self.session_token = SecureRandom::urlsafe_base64
-    self.save!
-  end
+  # def reset_session_token!
+  #   self.session_token = SecureRandom::urlsafe_base64
+  #   self.save!
+  # end
   
 end
