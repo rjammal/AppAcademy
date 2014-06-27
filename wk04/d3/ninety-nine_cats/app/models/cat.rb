@@ -22,6 +22,7 @@ class Cat < ActiveRecord::Base
   validates :color, inclusion: { in: COLORS}
   
   has_many :cat_rental_requests, dependent: :destroy 
+  belongs_to :owner, class_name: "User", foreign_key: :user_id
   
   
 

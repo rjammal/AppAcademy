@@ -30,10 +30,27 @@
 
 <h3>Rental Requests</h3>
 <ul>
+  
   <% @cat.cat_rental_requests.order(:start_date).each_with_index do |rental, i| %>
     <li>Rental #<%= i + 1 %>:
         <%= rental.start_date %> to <%= rental.end_date %>:
         <%= rental.status %>
+        
+        <%= rental.user.user_name %>
+        
+        <% if current_user &&
+           @cat.user_id == current_user.id &&
+           rental.status =="PENDING"%>
+         
+          <%= button_to "Approve", 
+                cat_rental_request_approve_url(rental.id), 
+                method: :patch %>
+        
+          <%= button_to "Deny", 
+                cat_rental_request_deny_url(rental.id), 
+                method: :patch %>
+
+        <% end %>
     </li>
   <% end %>
 </ul>

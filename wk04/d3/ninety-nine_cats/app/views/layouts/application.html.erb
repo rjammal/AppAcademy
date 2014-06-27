@@ -5,6 +5,14 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+
+<% if current_user %>
+    <h1>Hello, <%= current_user.user_name %></h1>
+    <%= button_to "Log Out", session_url, method: :delete %>
+    
+<% else %>
+    <%= link_to "Log in", new_session_url%>
+<% end %>
 <% if flash[:errors] %>
 <p><%= flash[:errors] %></p>
 <% end %>

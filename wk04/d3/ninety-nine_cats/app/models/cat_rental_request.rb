@@ -20,6 +20,8 @@ class CatRentalRequest < ActiveRecord::Base
   before_validation :set_status
   
   belongs_to :cat
+  belongs_to :user
+  
   
   def approve!
     ActiveRecord::Base.transaction do
