@@ -1,0 +1,40 @@
+<%= flash_helper %>
+
+<% case action %>
+<% when :new_user %>
+    <% url = users_url %>
+    <% button_value = "Sign Up" %>
+<% when :new_session %>
+    <% url = session_url %>
+    <% button_value = "Log In" %>
+<% when :edit_user %>
+    <% url = users_url(user) %>
+    <% button_value = "Save Changes" %>
+<% end %>
+
+
+
+<form action='<%= url %>' method='POST'>
+
+    <%= authorize_form %>
+
+    <label>Email
+        <input 
+            type='text'
+            name='user[email]'
+            value='<%= user.email %>'>
+    </label>
+    <br>
+    <label>Password
+        <input 
+            type='password'
+            name='user[password]'
+            value='<%= user.password %>'>
+    </label>
+    <br>
+
+    <input 
+        type='submit' 
+        value='<%= button_value %>'>
+
+</form>

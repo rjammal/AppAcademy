@@ -1,0 +1,57 @@
+<% band_id = album.band_id || params[:band_id].to_i %>
+
+<% url = action == :new ? band_albums_url : album_url(album.id) %>
+
+<%= flash_helper %> 
+
+<form action='<%= url %>' method='POST'>
+    <%= authorize_form %>
+
+    <%= edit_method if action == :edit %>
+
+    <label>Band Name
+        <select name='album[band_id]'>
+            <option value="">Please select a band</option>
+            <% Band.all.each do |band| %>
+                <option 
+                    value='<%= band.id %>'
+                    <%= "selected" if band_id == band.id %>>
+                        <%= band.name %>
+                </option>
+            <% end %>
+        </select>
+    </label>
+    <br>
+
+    <label>Album Name
+        <input 
+            type='text'
+            name='album[name]'
+            value='<%= album.name %>'>
+    </label>
+    <br>
+
+    Recording Type:
+    <br>
+    <label>Live
+        <input 
+            type='radio'
+            <%= "checked" if album.recording_type == "live" %>
+            name='album[recording_type]'
+            value='live'>
+    </label>
+    <br>
+    <label>Studio
+        <input 
+            type='radio'
+            <%= "checked" if album.recording_type == "studio" %>
+            name='album[recording_type]'
+            value='studio'>
+    </label>
+    <br>
+
+    <input 
+        type='submit'
+        value='Save'>
+
+</form>

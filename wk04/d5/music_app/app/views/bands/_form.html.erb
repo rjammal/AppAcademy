@@ -1,0 +1,20 @@
+<% url = action == :new ? bands_url : band_url(band.id) %>
+<%= flash_helper %>
+<form action='<%= url %>' method='POST'>
+
+    <%= authorize_form %>
+
+    <%= edit_method if action == :edit %>
+
+    <label>Name
+        <input 
+            type='text'
+            name='band[name]'
+            value='<%= band.name %>'>
+    </label>
+    <br>
+    <input 
+        type='submit'
+        value='Save'>
+
+</form>
