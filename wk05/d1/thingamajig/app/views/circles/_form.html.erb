@@ -1,0 +1,18 @@
+<label>name
+  <input type="text" id="circle_name" name="circle[name]", value="<%= circle.name %>">
+</label>
+
+<input type='hidden' name="circle[member_ids][]" value="">
+
+<% User.all.each do |user| %>
+
+  <label><%= user.email %>
+    <input 
+      type="checkbox"
+      name="circle[member_ids][]" 
+      value="<%= user.id %>"
+      <%= 'checked' if circle.members.include?(user) %>>
+  </label>
+
+<% end %>
+

@@ -1,0 +1,14 @@
+<header>Edit profile</header>
+
+<%= flash_helper %>
+
+<form action="<%= update_user_url %>" method="post">
+  <input type="hidden" name="_method" value="PATCH">
+
+<%= authorize_form %>
+
+<%= render 'user_form', user: @user %>
+
+<input type="submit" value="submit">
+
+</form>

@@ -1,0 +1,11 @@
+<span id="intro">You are special and imbued with unique talents and abilities!</span>
+<%= link_to "New Circle", new_circle_url %>
+<ul>
+  <% @circles.each do |circle| %>
+    <li>
+      <%= link_to circle.name, circle_url(circle) %>
+    </li>
+  <% end%>
+</ul>
+
+<%= link_to "Feed", feed_url %>

@@ -1,0 +1,12 @@
+<header>New Post</header>
+
+<%= flash_helper %>
+
+<form action="<%= posts_url %>" method='post'>
+  <%= authorize_form %>
+    
+  <%= render 'form', post: @post %>
+  
+  <input type='submit' value='Create Post'>
+
+</form>

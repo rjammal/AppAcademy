@@ -1,0 +1,16 @@
+<section>
+<header>
+  <span class="postid">Post #<%= post.id %></span>
+  <span class="author">by <%= link_to post.author.email, user_url(post.author) %></span>
+  <span class="date">on <%= post.created_at.to_date.to_formatted_s(:rfc822) %></span>
+</header>
+<div style="clear: both;"></div>
+
+<%= simple_format(post.body) %>
+
+<ul>
+  <% post.links.each do |link| %>
+    <li><%= link_to link.url, link.url %></li>
+  <% end %>
+</ul>
+</section>

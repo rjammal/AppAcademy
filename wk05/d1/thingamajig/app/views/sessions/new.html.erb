@@ -1,0 +1,13 @@
+<header>Log in</header>
+
+<%= flash_helper %>
+
+<form id='log_in' action="<%= session_url %>" method="post">
+
+<%= authorize_form %>
+
+<%= render 'user_form', user: @user %>
+
+<input type="submit" value="Log in">
+
+</form>

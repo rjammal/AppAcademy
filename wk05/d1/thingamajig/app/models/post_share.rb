@@ -1,0 +1,30 @@
+# == Schema Information
+#
+# Table name: post_shares
+#
+#  id         :integer          not null, primary key
+#  post_id    :integer          not null
+#  circle_id  :integer          not null
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+class PostShare < ActiveRecord::Base
+  validates :post, :circle_id, presence: true
+  
+  belongs_to(
+    :post, 
+    class_name: "Post", 
+    foreign_key: :post_id, 
+    primary_key: :id, 
+    inverse_of: :post_shares
+  )
+  
+  belongs_to(
+    :circle, 
+    class_name: "Circle", 
+    foreign_key: :circle_id, 
+    primary_key: :id
+  )
+  
+end
