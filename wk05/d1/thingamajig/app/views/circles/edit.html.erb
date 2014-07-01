@@ -1,0 +1,17 @@
+<header>Update Circle</header>
+
+<%= flash_helper %>
+
+<form action="<%= circle_url(@circle) %>" method='post'>
+  <%= authorize_form %>
+  <input 
+    type='hidden'
+    name='_method'
+    value='patch'>
+    
+  <%= render 'form', circle: @circle %>
+  
+  <input type='submit' value='Save'>
+  
+  
+</form>

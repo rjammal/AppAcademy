@@ -1,0 +1,32 @@
+<label>body
+  <textarea id="body" name="post[body]", value="<%= post.body %>">
+  </textarea>
+</label>
+  <br>
+<input type='hidden' name="circle[member_ids][]" value="">
+
+<% 3.times do |n| %>
+
+  <label>Link #<%= n+1 %>
+    <input 
+      type="text"
+      name="links[<%= n %>][url]" 
+      value="<%= post.links[n].try(:url) %>">
+  </label>
+  <br>
+
+<% end %>
+
+<% current_user.circles.each do |circle| %>
+
+  <label>
+    <input 
+      type="checkbox"
+      name="post[circle_ids][]" 
+      value="<%= circle.id %>"
+      <%= 'checked' if post.circles.include?(circle) %>>
+    <%= circle.name %>
+  </label>
+  <br>
+<% end %>
+

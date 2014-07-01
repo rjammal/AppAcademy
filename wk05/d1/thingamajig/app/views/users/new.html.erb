@@ -1,0 +1,13 @@
+<header>Sign up</header>
+
+<%= flash_helper %>
+
+<form id="sign_up" action="<%= users_url %>" method="post">
+
+<%= authorize_form %>
+
+<%= render 'user_form', user: @user %>
+
+<input type="submit" value="Sign up">
+
+</form>

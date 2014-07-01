@@ -1,0 +1,5 @@
+<header>Welcome to your beautiful profile, <%= @user.email %>!</header>
+<% if @user == current_user %>
+<p>Perhaps you would like to <%= link_to 'change your password', edit_user_url %>?</p>
+<% end %>
+<%= link_to "Back to circles", circles_url %>

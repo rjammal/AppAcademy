@@ -1,0 +1,12 @@
+<header>Create Circle</header>
+
+<%= flash_helper %>
+
+<form action="<%= circles_url %>" method='post'>
+  <%= authorize_form %>
+    
+  <%= render 'form', circle: @circle %>
+  
+  <input type='submit' value='Save'>
+
+</form>

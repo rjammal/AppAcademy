@@ -1,0 +1,13 @@
+<header>
+  <marquee>Members of <%= @circle.name %></marquee>
+  <br>
+  <%= link_to "Return to Circles", circles_url %>
+</header>
+<%= link_to "Edit circle", edit_circle_url(@circle) %>
+<ul>
+  <% @circle.members.each do |member| %>
+    <li>
+      <%= link_to member.email, user_url(member) %>
+    </li>
+  <% end %>
+</ul>

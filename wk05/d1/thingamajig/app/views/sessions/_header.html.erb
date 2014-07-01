@@ -1,0 +1,6 @@
+<header id='session'>
+  <% if logged_in? %>
+    <%= link_to current_user.email, user_url(current_user) %>
+    <%= link_to "Log Out?", session_url, method: :delete %>
+  <% end %>
+</header>

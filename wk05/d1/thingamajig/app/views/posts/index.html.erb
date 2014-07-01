@@ -1,0 +1,8 @@
+<header>Stream for <%= current_user.email %></header>
+
+
+<% @posts.each do |post| %>
+  <%= render 'show', post: post %>
+<% end %>
+
+<%= link_to "Circles", circles_url, id: "link" %>
