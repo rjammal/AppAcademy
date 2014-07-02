@@ -15,6 +15,12 @@ class TracksController < ApplicationController
     redirect_to album_tracks_url(@track.album_id)
   end
 
+  def destroy_note
+    @note = Note.find(params[:note_id])
+    @note.destroy
+    redirect_to track_url(params[:id])
+  end
+
   def edit
     @track= Track.find(params[:id])
     render 'edit'
@@ -28,6 +34,22 @@ class TracksController < ApplicationController
   def new
     @track = Track.new
     render 'new'
+  end
+
+  def new_note
+    if !logged_in?
+      flash.now[:errors] = ["You must be logged in to create a note."]
+      render 'show'
+    end
+    @note = Note.new(note_params)
+    note.track_id = params[:id]
+    note.user_id = current_user.id
+    if @note.save
+        redirect_to track_url(params[:id])
+    else
+      flash.now[:errors] = @note.errors.full_messages
+      render 'show'
+    end
   end
 
   def show
@@ -48,5 +70,9 @@ class TracksController < ApplicationController
   private 
   def track_params
     params.require(:track).permit(:name, :album_id, :track_type, :lyrics)
+  end
+
+  def note_params
+    params.require(:note).permit(:text)
   end
 end

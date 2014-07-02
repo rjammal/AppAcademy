@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
   validates :password, length: {minimum: 6, allow_nil: true}
   before_validation :ensure_session_token
 
+  has_many :notes, dependent: :destroy
+
   def self.find_by_credentials(user_email, pword)
     user = find_by_email(user_email)
     return nil if user.nil?
