@@ -1,5 +1,6 @@
 class Route
   attr_reader :pattern, :http_method, :controller_class, :action_name
+  include URLHelper
 
   def initialize(pattern, http_method, controller_class, action_name)
     @pattern = Regexp.try_convert(pattern)
@@ -37,7 +38,9 @@ class Router
 
   # simply adds a new route to the list of routes
   def add_route(pattern, method, controller_class, action_name)
-    self.routes << Route.new(pattern, method, controller_class, action_name)
+    route = Route.new(pattern, method, controller_class, action_name)
+    self.routes << route
+    controller_class.create_url_helper(route)
   end
 
   # evaluate the proc in the context of the instance
@@ -50,7 +53,7 @@ class Router
   # when called add route
   [:get, :post, :put, :delete].each do |http_method|
     define_method(http_method) do |pattern, controller_class, action_name| 
-      self.routes << Route.new(pattern, http_method, controller_class, action_name)
+      add_route(pattern, http_method, controller_class, action_name)
     end
   end
 

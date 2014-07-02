@@ -2,10 +2,13 @@ require 'erb'
 require 'active_support/inflector'
 require_relative 'params'
 require_relative 'session'
+require_relative 'flash'
+require_relative 'url_helper'
 
 
 class ControllerBase
-  attr_reader :params, :req, :res
+  attr_reader :params, :req, :res, :flash
+  extend URLHelper
 
   # setup the controller
   def initialize(req, res, route_params = {})
@@ -13,6 +16,7 @@ class ControllerBase
     @res = res
     @already_built_response = false
     @params = Params.new(@req, route_params)
+    @flash = Flash.new(req)
   end
 
   # populate the response with content
@@ -34,6 +38,9 @@ class ControllerBase
   # set the response status code and header
   def redirect_to(url)
     raise "Already Built Response" if @already_built_response
+    if @req.request_method && @req.request_method.downcase == 'post'
+      raise "CSRF!" unless params[authenticity_token] == session[authenticity_token]
+    end
     @res.status = 302
     @res["location"] = url
     @already_built_response = true

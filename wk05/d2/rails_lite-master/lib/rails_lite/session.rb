@@ -12,6 +12,7 @@ class Session
       end
     end
     @cookie = {}
+    @cookie['authenticity_token'] = Session.get_auth_token
   end
 
   def [](key)
@@ -27,5 +28,18 @@ class Session
   def store_session(res)
     cookie = WEBrick::Cookie.new('_rails_lite_app', @cookie.to_json)
     res.cookies << cookie
+  end
+
+
+  def self.get_auth_token
+    if File.exist?('secret_token.txt')
+      File.read('secret_token.txt')
+    else 
+      auth_token = SecureRandom::urlsafe_base64
+      File.open('secret_token.txt', 'w') do |f|
+        f.write(auth_token)
+      end
+      auth_token
+    end
   end
 end

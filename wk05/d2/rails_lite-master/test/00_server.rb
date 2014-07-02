@@ -23,14 +23,14 @@ class MyController < ControllerBase
   end
 
   def redirect_test
-    redirect_to('http://google.com')
+    redirect_to user_url(1)
   end
 end
 
 server.mount_proc '/' do |req, res|
-  MyController.new(req, res).go
+  #MyController.new(req, res).go
 
-  #MyController.new(req, res).redirect_test
+  MyController.new(req, res).redirect_test
 
 end
 
