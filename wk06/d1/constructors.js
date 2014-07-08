@@ -16,7 +16,7 @@ function Student(fName, lName) {
     this.fName = fName;
     this.lName = lName;
     
-    this.courseLoad = ["this is my couyrse"];
+    this.courseLoad = [];
 }
 
 function Course (name, department, numCredits) {
