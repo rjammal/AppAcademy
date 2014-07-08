@@ -8,7 +8,7 @@ class Params
   # 3. route params
   def initialize(req, route_params = {})
     @params = route_params
-    @permitted = []
+    @permitted = ['authenticity_token']
 
     return if !req
 
@@ -70,17 +70,7 @@ class Params
   # this should return an array
   # user[address][street] should return ['user', 'address', 'street']
   def parse_key(key)
-    if key == ""
-      []
-    elsif key[0] != "["
-      # grab first key, parse rest
-      parse = key.scan(/([^\[]+)(.*)/)
-      [parse[0][0]] + parse_key(parse[0][1])
-    else # remove initial brackets if first key kas brackets
-      key = key.sub('[', '')
-      key = key.sub(']', '')
-      parse_key(key)
-    end
+    key.split(/\[|\]\[|\]/)
   end
 
 end

@@ -20,6 +20,7 @@ class StatusController < ControllerBase
   def show
     render_content("status ##{params[:id]}", "text/text")
   end
+
 end
 
 class UserController < ControllerBase
@@ -27,6 +28,11 @@ class UserController < ControllerBase
     users = ["u1", "u2", "u3"]
 
     render_content(users.to_json, "text/json")
+  end
+
+  def show
+    puts methods.grep('_url')
+    redirect_to users_url
   end
 end
 
@@ -36,7 +42,7 @@ router.draw do
   get Regexp.new("^/users$"), UserController, :index
 
   # uncomment this when you get to route params
-  # get Regexp.new("^/statuses/(?<id>\\d+)$"), StatusController, :show
+  get Regexp.new("^/users/(?<id>\\d+)$"), UserController, :show
 end
 
 server.mount_proc '/' do |req, res|
