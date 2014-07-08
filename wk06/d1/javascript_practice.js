@@ -103,9 +103,9 @@ var range = function (start, end) {
     if (start >= end) {
         return [];
     } else {
-        var fuckYouJavaScript = range(start, end - 1);
-        fuckYouJavaScript.push(end - 1);
-        return fuckYouJavaScript;
+        var result = range(start, end - 1);
+        result.push(end - 1);
+        return result;
     }
 };
 
@@ -144,8 +144,6 @@ var fibonacci = function(n) {
 var binarySearch = function(array, target) {
     if (array.length === 0) {
         return -1;
-    } else if (array.length === 1 && array[0] === target) {
-        return 0;
     } else {
         var middle = Math.floor(array.length/2);
         if (array[middle] === target) {
@@ -153,7 +151,8 @@ var binarySearch = function(array, target) {
         } else if (target < array[middle]) {
             return binarySearch(array.slice(0, middle), target);
         } else {
-            return binarySearch(array.slice(middle), target) + middle;
+            var rightResult = binarySearch(array.slice(middle), target)
+            return rightResult === -1 ? -1 : rightResult + middle;
         }
     }
 };

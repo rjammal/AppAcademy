@@ -4,10 +4,6 @@ module URLHelper
 
   def create_url_helper(route)
 
-    #collection_name = route.controller_class.name
-    #singular_name = collection_name.singularize
-    # if route.pattern.match(collection_name)
-    #   method_name = collection_name
     name, main, param, modifier = method_name_and_args(route.pattern)
     puts name
     if param 
