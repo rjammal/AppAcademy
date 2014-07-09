@@ -30,10 +30,11 @@ function Piece(color) {
 
 function Game() {
     this.board = new Board();
+    this.player1Turn = true;
 }
 
 Board.prototype.validMove = function(position, color) {
-    if (typeof this.grid[position[1]][position[0]] !== "undefined") {
+    if (!this.empty(positon[0], position[1])) {
         return false;
     }
     for (var i = 0; i < directions.length; i++) {
@@ -71,7 +72,9 @@ Board.prototype.flipPieces = function(position, direction) {
         if (startColor !== this.grid[position[1]][position[0]].color) {
             piecesToFlip.push(position);
         } else {
-            // TODO actually flip
+            for (var i = 0; i < piecesToFlip.length; i++) {
+                this.flipPiece(piecesToFlip[i]);
+            }
             return;
         }
         position = this.moveInDirection(position, direction);
@@ -96,4 +99,53 @@ Board.prototype.moveInDirection = function(position, direction) {
 
 Game.prototype.placePiece = function (position, color) {
     this.board[position[1]][position[0]] = new Piece(color);
+};
+
+
+Board.prototype.empty = function(x, y) {
+    typeof this.grid[y][x] === "undefined";
+};
+
+Board.prototype.noValidMoves = function(color) {
+    for (var y = 0; y < 8; y++) {
+        for (var x = 0; x < 8; x++) {
+            if (this.validMove([x, y], color)) {
+                return false;
+            }
+        }
+    }
+    return true;
+};
+
+Game.prototype.over = function () {
+    return this.board.noValidMoves('red') && this.board.noValidMoves('blue');
+};
+
+Game.prototype.score = function () {
+    var result = {red: 0, blue: 0};
+    for (var y = 0; y < 8; y++) {
+       for (var x = 0; x < 8; x++) {
+            var piece = this.board.grid[y][x];
+            if (typeof piece !== 'undefined') {
+                result[piece.color] += 1;
+            }
+       }
+   }
+   return result;
+};
+
+Game.prototype.run = function () {
+    var game = this;
+    var completionCallback = function() {
+        if (game.over()) {
+            console.log(game.score);
+        } else {
+            game.takeTurn( completionCallback );
+        }
+    }
+    this.takeTurn( completionCallback );
+};
+
+Game.prototype.takeTurn = function ( completionCallback ) {
+
 };

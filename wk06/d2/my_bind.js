@@ -1,7 +1,7 @@
 Function.prototype.myBind = function (object) {
     var that = this;
     return function () {
-        that.apply(object, []);
+        return that.apply(object, []);
     };
 };
 
