@@ -147,5 +147,5 @@ Game.prototype.run = function () {
 };
 
 Game.prototype.takeTurn = function ( completionCallback ) {
-
+    
 };
