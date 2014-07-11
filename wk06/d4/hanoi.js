@@ -50,8 +50,6 @@
 
     if (game.isWon()) {
       alert("You win!");
-    } else {
-      game.run();
     }
   }
 })(this);
