@@ -1,0 +1,23 @@
+<html>
+<head>
+  <script src='jquery.js'></script>
+  <script src='underscore.js'></script>
+  <script src='ttt.js'></script>
+  <script src='ttt_ui.js'></script>
+  <link rel="stylesheet" href="ttt.css" type="text/css" media="screen">
+</head>
+
+<body>
+  <div id='grid'></div>
+  
+  <script>
+  $(document).ready(function() {
+    
+    var ui = new TTTUI(new TTT.Game());
+    ui.createGrid($('#grid'));
+    ui.setEventHandlers()
+  });
+  </script>
+  
+</body>
+</html>

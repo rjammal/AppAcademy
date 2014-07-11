@@ -1,0 +1,28 @@
+body {
+  text-align: center;
+}
+
+#stacks {
+  width: 606px;
+  border: 3px solid red;
+  display: flex;
+}
+
+.stack {
+  width: 200px;
+  height: 200px;
+  background: white;
+  border: 1px solid black;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.disc {
+  height: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  background: blue;
+  display: flex;
+}

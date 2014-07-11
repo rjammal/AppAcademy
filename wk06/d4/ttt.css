@@ -1,0 +1,19 @@
+body {
+  text-align: center;
+}
+
+#grid {
+  width: 306px;
+  margin: 0, auto;
+  border: 3px solid red;
+}
+
+.square {
+  width: 100px;
+  height: 100px;
+  background: white;
+  border: 1px solid black;
+  display: inline-block;
+  font-size: 75px;
+  font-family: sans-serif;
+}
