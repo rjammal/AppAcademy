@@ -1,0 +1,79 @@
+<h1>Users</h1>
+
+<ul>
+<% User.all.each do |user| %>
+  <li>
+    <%= user.username %>
+    <% if user != current_user %>
+    <span class="button_wrapper <% if current_user.celebs.include?(user) %>
+                                can-unfriend
+                                <% else %>
+                                can-friend
+                                <% end %>">
+      <button class='friend-buttons friend' data-celeb_id='<%= user.id %>'>
+        Add Friend
+      </button>
+      <button 
+        class='friend-buttons unfriend' 
+        <% friendship = user.in_friendships
+                            .find_by(out_friend_id: current_user.id) %>
+        <%= "data-friendship_id=#{friendship.id}" if friendship %>>
+        Remove Friend
+      </button>
+    </span>
+    <% end %>
+  </li>
+<% end %>
+</ul>
+
+<script type='application/javascript'>
+$(function () {
+  $('ul').on('click', '.friend', function() {
+    var $button = $(this);
+    var originalText = $button.text();
+    
+    $button.text("Working...");
+    $button.attr("disabled", "disabled");
+    $.ajax({
+      url: '/users/' + $button.data('celeb_id') + '/friendships',
+      type: 'post',
+      success: function(response) {
+        var friendshipID = response;
+        successCallback($button, originalText);
+        var $unfriendButton = $button.next();
+        $unfriendButton.data('friendship_id', friendshipID);
+      },
+      error: function(response) {
+        $button.text(response.responseText);
+      }
+    })
+  });
+  
+  $('ul').on('click', '.unfriend', function() {
+    var $button = $(this);
+    var originalText = $button.text();
+
+    $button.text("Working...");
+    $button.attr("disabled", "disabled");
+    $.ajax({
+      url: '/friendships/' + $button.data('friendship_id'),
+      type: 'delete',
+      success: function() {
+        successCallback($button, originalText);
+        $button.removeData('friendship_id');
+      },
+      error: function(response) {
+        $button.text(response.responseText);
+      }
+    })
+  })
+});
+
+var successCallback = function($button, originalText) {
+  var $span = $button.parent();
+  $span.toggleClass("can-friend");
+  $span.toggleClass("can-unfriend");
+  $button.text(originalText)
+  $button.removeAttr("disabled");
+};
+</script>
