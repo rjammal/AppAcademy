@@ -28,11 +28,14 @@
   };
   
   MovingObject.prototype.isCollidedWith = function(obj) {
+    return this.distance(obj) < (this.radius + obj.radius);
+  };
+
+  MovingObject.prototype.distance = function(obj) {
     var deltaX = this.pos[0] - obj.pos[0];
     var deltaY = this.pos[1] - obj.pos[1];
-    var distance = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
-    return distance < (this.radius + obj.radius);
-  };
+    return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+  }
   
   MovingObject.prototype.move = function (maxX, maxY) {
     this.pos[0] += this.vel[0];
@@ -40,5 +43,7 @@
     this.pos[0] = (this.pos[0] < 0 ? maxX : this.pos[0] % maxX);
     this.pos[1] = (this.pos[1] < 0 ? maxY : this.pos[1] % maxY);
   };
+
+  
   
 })(this);

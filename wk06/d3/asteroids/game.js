@@ -7,9 +7,9 @@
     this.DIM_X = 800;
     this.DIM_Y = 600;
     this.ctx = ctx;
+    this.ship = new Asteroids.Ship([this.DIM_X / 2, this.DIM_Y / 2], [0, 0]);
     this.asteroids = [];
     this.addAsteroids(5);
-    this.ship = new Asteroids.Ship([this.DIM_X / 2, this.DIM_Y / 2], [0, 0]);
     this.bullets = [];
     
     var img = new Image();
@@ -17,20 +17,25 @@
     img.onload = function () {
       game.ctx.drawImage(img, 0, 0);
     };
-    img.src = 'myImage.jpg';
+    img.src = 'space.jpg';
     this.img = img;
   };
   
   Game.prototype.addAsteroids = function(num){
     for(var i = 0; i < num; i++){
-      this.asteroids.push(Asteroids.Asteroid.prototype.randomAsteroid(this.DIM_X, this.DIM_Y));
+      var asteroid = Asteroids.Asteroid.prototype.randomAsteroid(this.DIM_X, this.DIM_Y);
+      if (this.ship.distance(asteroid) < 100) {
+        i--; //redo if it spawns too close to the ship
+      } else {
+        this.asteroids.push(asteroid);
+      }
     }
   };
   
   Game.prototype.bindKeyHandlers = function() {
     var game = this;
     var turnSpeed = 15;
-    key('up', function(){game.ship.power(game.ship.heading);});
+    key('up', function() { game.ship.power(game.ship.heading);});
     key('space', function() { game.bullets.push(game.ship.fireBullet()); });
     key('right', function() { game.ship.heading += turnSpeed;});
     key('left', function() { game.ship.heading -= turnSpeed;});
@@ -59,18 +64,17 @@
     });
     destroyBullets.forEach(function(bullet) {
       var index = gameInstance.bullets.indexOf(bullet);
-      gameInstance.bullets.splice(index, index + 1);
+      gameInstance.bullets.splice(index, 1);
     });
     destroyAsteroids.forEach(function(asteroid) {
       var index = gameInstance.asteroids.indexOf(asteroid);
-      gameInstance.asteroids.splice(index, index + 1);
+      gameInstance.asteroids.splice(index, 1);
     });
   };
   
   Game.prototype.draw = function() {
     this.ctx.drawImage(this.img, 0, 0);
     var gameInstance = this;
-    //this.ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
     this.asteroids.forEach(function(asteroid) {
       asteroid.draw(gameInstance.ctx);
     });
