@@ -32,14 +32,34 @@
     }
   };
   
-  Game.prototype.bindKeyHandlers = function() {
+
+  Game.prototype.keyPresses = function () {
     var game = this;
+    var keyMap = {
+      space: 32,
+      left: 37, 
+      up: 38, 
+      right: 39
+    }
     var turnSpeed = 15;
-    key('up', function() { game.ship.power(game.ship.heading);});
-    key('space', function() { game.bullets.push(game.ship.fireBullet()); });
-    key('right', function() { game.ship.heading += turnSpeed;});
-    key('left', function() { game.ship.heading -= turnSpeed;});
-  };
+    var keysPressed = key.getPressedKeyCodes();
+    keysPressed.forEach( function(key) {
+      switch (key) {
+      case keyMap['space']:
+        game.bullets.push(game.ship.fireBullet());
+        break;
+      case keyMap['left']: 
+        game.ship.heading -= turnSpeed;
+        break;
+      case keyMap['right']: 
+        game.ship.heading += turnSpeed;
+        break; 
+      case keyMap['up']: 
+        game.ship.power(game.ship.heading);
+        break;
+      }
+    })
+  }
   
   Game.prototype.checkCollisions = function() {
     var gameInstance = this;
@@ -96,13 +116,13 @@
   };
   
   Game.prototype.step = function() {
+    this.keyPresses(); 
     this.move();
     this.draw();
     this.checkCollisions();
   };
   
   Game.prototype.start = function() {
-    this.bindKeyHandlers();
     var game = this;
     this.timerId = window.setInterval(function() {game.step();}, game.FPS);
   };
