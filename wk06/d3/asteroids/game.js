@@ -32,6 +32,11 @@
     }
   };
   
+  Game.prototype.bindKeyHandlers = function() {
+    var game = this;
+    
+    key('space', function() { game.bullets.push(game.ship.fireBullet()); });
+  };
 
   Game.prototype.keyPresses = function () {
     var game = this;
@@ -45,9 +50,6 @@
     var keysPressed = key.getPressedKeyCodes();
     keysPressed.forEach( function(key) {
       switch (key) {
-      case keyMap['space']:
-        game.bullets.push(game.ship.fireBullet());
-        break;
       case keyMap['left']: 
         game.ship.heading -= turnSpeed;
         break;
@@ -123,6 +125,7 @@
   };
   
   Game.prototype.start = function() {
+    this.bindKeyHandlers();
     var game = this;
     this.timerId = window.setInterval(function() {game.step();}, game.FPS);
   };
