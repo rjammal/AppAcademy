@@ -67,7 +67,8 @@
     }
     // 
     if (keysPressed.indexOf(keyMap.up) === -1) {
-      if (game.ship.vel[0] != 0 || game.ship.vel[1] != 0) {
+      if (Math.abs(game.ship.vel[0]) * 2 > Asteroids.Ship.MAX_SPEED || 
+            Math.abs(game.ship.vel[1]) * 2 > Asteroids.Ship.MAX_SPEED) {
         game.ship.imageHeight = 40;
         game.ship.yImg = 85;
       } else {

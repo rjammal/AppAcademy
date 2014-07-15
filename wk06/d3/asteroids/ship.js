@@ -7,7 +7,6 @@
     this.heading = 0;
     
     var img = new Image();
-    var ship = this; 
     img.src = 'shipImage.gif';
     this.img = img; 
 
