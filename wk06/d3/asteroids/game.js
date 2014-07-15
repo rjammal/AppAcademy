@@ -46,21 +46,35 @@
       up: 38, 
       right: 39
     }
-    var turnSpeed = 15;
+
     var keysPressed = key.getPressedKeyCodes();
     keysPressed.forEach( function(key) {
       switch (key) {
       case keyMap['left']: 
-        game.ship.heading -= turnSpeed;
+        game.ship.turnLeft();
         break;
       case keyMap['right']: 
-        game.ship.heading += turnSpeed;
+        game.ship.turnRight();
         break; 
       case keyMap['up']: 
         game.ship.power(game.ship.heading);
         break;
       }
     })
+    // return ship to forward image if neither left nor right is pressed
+    if (keysPressed.indexOf(keyMap.left) === -1 && keysPressed.indexOf(keyMap.right) === -1) {
+      game.ship.forwardImage();
+    }
+    // 
+    if (keysPressed.indexOf(keyMap.up) === -1) {
+      if (game.ship.vel[0] != 0 || game.ship.vel[1] != 0) {
+        game.ship.imageHeight = 40;
+        game.ship.yImg = 85;
+      } else {
+        game.ship.imageHeight = 40;
+        game.ship.yImg = 0;
+      }
+    }
   }
   
   Game.prototype.checkCollisions = function() {

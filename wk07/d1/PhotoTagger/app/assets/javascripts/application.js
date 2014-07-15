@@ -28,7 +28,7 @@ PhotoTagger.initialize = function() {
     
     $(function() {
         PhotoTagger.Photo.fetchByUserID(currentUserId, function() {
-            var photoView = new PhotoTagger.PhotoListView(PhotoTagger.Photo.all);
+            var photoView = new PhotoTagger.PhotoListView(PhotoTagger.Photo.allObj);
             $('div#content').html(photoView.render().$el)
             var photoFormView = new PhotoTagger.PhotoFormView();
             $('div#content').append(photoFormView.render().$el);
