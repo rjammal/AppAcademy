@@ -21,6 +21,7 @@ _.extend(PhotoTagger.PhotoFormView.prototype, {
         var photo = new PhotoTagger.Photo($('#photo_form').serializeJSON());
         photo.save(function() {
             console.log('saved!');
+            $('#photo_form')[0].reset();
         });
     }
 });

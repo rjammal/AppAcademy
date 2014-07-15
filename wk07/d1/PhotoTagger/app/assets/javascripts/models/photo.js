@@ -25,7 +25,6 @@ _.extend(PhotoTagger.Photo.prototype, {
                success: function (photo) {
                    _.extend(that.attributes, photo);
                    PhotoTagger.Photo.allObj[that.attributes.id] = that;
-                   PhotoTagger.Photo.populateAllArray();
                    PhotoTagger.Photo.trigger("add");
                    callback(that);
                }
@@ -65,25 +64,14 @@ _.extend(PhotoTagger.Photo, {
                  return new PhotoTagger.Photo(photo); 
               });
               photoObjects.forEach(function(p) {
-                  PhotoTagger.Photo.all[p.attributes.id] = p;
+                  PhotoTagger.Photo.allObj[p.attributes.id] = p;
               });
-              PhotoTagger.Photo.populateAllArray();
               callback();
           }
        });
     },
     
     allObj: {}, 
-    
-    all: [],
-    
-    populateAllArray: function() {
-        var result = [];
-        for (var key in this.all) {
-            result.push(this.all[key]);
-        }
-        this.all = result;
-    },
     
     _events: {}, 
     

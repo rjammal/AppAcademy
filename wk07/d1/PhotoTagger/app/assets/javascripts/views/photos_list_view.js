@@ -10,12 +10,10 @@ PhotoTagger.PhotoListView = function(photos) {
 _.extend(PhotoTagger.PhotoListView.prototype, {
     render: function () {
         var $ul = $('<ul>')
-        for (var id in photos) {
-            if photo.hasOwnProperty(id) {
-                var $li = $('<li>')
-                $li.text(photos[id].attributes.title)
-                $ul.append($li)
-            }
+        for (var id in this.photos) {
+            var $li = $('<li>');
+            $li.text(this.photos[id].attributes.title);
+            $ul.append($li);
         }
         // this.photos.forEach(function(photo) {
         //     var $li = $('<li>')
