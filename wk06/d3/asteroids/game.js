@@ -57,7 +57,7 @@
         game.ship.turnRight();
         break; 
       case keyMap['up']: 
-        game.ship.power(game.ship.heading);
+        game.ship.power(game.ship.rotation);
         break;
       }
     })
@@ -65,7 +65,7 @@
     if (keysPressed.indexOf(keyMap.left) === -1 && keysPressed.indexOf(keyMap.right) === -1) {
       game.ship.forwardImage();
     }
-    // 
+    // switch ship images based on keys
     if (keysPressed.indexOf(keyMap.up) === -1) {
       if (Math.abs(game.ship.vel[0]) * 2 > Asteroids.Ship.MAX_SPEED || 
             Math.abs(game.ship.vel[1]) * 2 > Asteroids.Ship.MAX_SPEED) {

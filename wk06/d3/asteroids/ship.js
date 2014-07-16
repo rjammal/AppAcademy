@@ -4,7 +4,7 @@
   
   var Ship = Asteroids.Ship = function(pos, vel) {
     Asteroids.MovingObject.call(this, pos, vel, 30, '#FF00FF');
-    this.heading = 0;
+    this.rotation = 0;
     
     var img = new Image();
     img.src = 'shipImage.gif';
@@ -22,20 +22,20 @@
 
   Ship.turnSpeed = 10
   
-  var headingVec = function(heading){
-    var x = Math.cos((heading - 90)/180 * Math.PI);
-    var y = Math.sin((heading - 90)/180 * Math.PI);
+  var headingVec = function(rotation){
+    var x = Math.cos((rotation - 90)/180 * Math.PI);
+    var y = Math.sin((rotation - 90)/180 * Math.PI);
     return [x,y];
   }
   
   Ship.prototype.turnLeft = function() {
     this.xImg = 0;
-    this.heading -= Ship.turnSpeed;
+    this.rotation -= Ship.turnSpeed;
   }
 
   Ship.prototype.turnRight = function() {
     this.xImg = 80;
-    this.heading += Ship.turnSpeed;
+    this.rotation += Ship.turnSpeed;
   }
 
   Ship.prototype.forwardImage = function() {
@@ -68,19 +68,12 @@
   }
 
   Ship.prototype.draw = function(ctx) {
-
-    var xCenter = this.pos[0] - (Ship.WIDTH / 2);
-    var yCenter = this.pos[1] - (this.imageHeight / 2); 
-    ctx.translate(this.pos[0], this.pos[1]);
-    ctx.rotate(Math.PI * this.heading / 180);
-    ctx.translate(this.pos[0] * -1, this.pos[1] * -1);
-
-    ctx.drawImage(this.img, this.xImg, this.yImg, Ship.WIDTH, this.imageHeight, xCenter, yCenter, 60, 60);
-
-    ctx.translate(this.pos[0], this.pos[1]);
-    ctx.rotate(Math.PI * this.heading * -1 / 180);
-    ctx.translate(this.pos[0] * -1, this.pos[1] * -1);
-  }
+    this.drawImg(ctx, {
+      imageWidth: Ship.WIDTH,
+      imageHeight: this.imageHeight,
+      stretchX: 60,
+      stretchY: 60})
+  };
 
   Ship.prototype.slowDown = function() {
     if (Math.abs(this.vel[0]) < 0.2 && Math.abs(this.vel[1]) < 0.2) {
@@ -92,8 +85,8 @@
   
   Ship.prototype.fireBullet = function() {
     var bulletSpeed = 10;
-    var bulletVel = [headingVec(this.heading)[0]*bulletSpeed,
-                     headingVec(this.heading)[1]*bulletSpeed];
+    var bulletVel = [headingVec(this.rotation)[0]*bulletSpeed,
+                     headingVec(this.rotation)[1]*bulletSpeed];
     var bulletPos = [this.pos[0], this.pos[1]];
     return new Asteroids.Bullet(bulletPos, bulletVel);
   };

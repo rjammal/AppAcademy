@@ -35,7 +35,7 @@
     var deltaX = this.pos[0] - obj.pos[0];
     var deltaY = this.pos[1] - obj.pos[1];
     return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
-  }
+  };
   
   MovingObject.prototype.move = function (maxX, maxY) {
     this.pos[0] += this.vel[0];
@@ -44,6 +44,46 @@
     this.pos[1] = (this.pos[1] < 0 ? maxY : this.pos[1] % maxY);
   };
 
-  
+  MovingObject.prototype.drawImg = function(ctx, options) {
+    var imageWidth = options.imageWidth, 
+        imageHeight = options.imageHeight,
+        stretchX = options.stretchX || options.imageWidth, 
+        stretchY = options.stretchY || options.imageHeight;
+
+    var xCenter = this.pos[0] - (imageWidth / 2);
+    var yCenter = this.pos[1] - (imageHeight / 2); 
+
+    ctx.translate(this.pos[0], this.pos[1]);
+    ctx.rotate(Math.PI * this.rotation / 180);
+    ctx.translate(this.pos[0] * -1, this.pos[1] * -1);
+
+    ctx.drawImage(
+      this.img, 
+      this.xImg, this.yImg, // x and y coords of top left corner of source image
+      imageWidth, imageHeight, // number of pixels to take from source
+      xCenter, yCenter, // position to place the image on the canvas
+      stretchX, stretchY // number of pixels to take on canvas- will stretch image if larger than
+                         // imageWidth and imageHeight 
+    );
+
+    ctx.translate(this.pos[0], this.pos[1]);
+    ctx.rotate(Math.PI * this.rotation * -1 / 180);
+    ctx.translate(this.pos[0] * -1, this.pos[1] * -1);
+  }; 
+
+  // Asteroid.prototype.draw = function(ctx) {
+
+  //   var xCenter = this.pos[0] - (this.radius / 2);
+  //   var yCenter = this.pos[1] - (this.imageHeight / 2); 
+  //   ctx.translate(this.pos[0], this.pos[1]);
+  //   ctx.rotate(Math.PI * this.rotation / 180);
+  //   ctx.translate(this.pos[0] * -1, this.pos[1] * -1);
+
+  //   ctx.drawImage(this.img, this.xImg, this.yImg, 60, 55, xCenter, yCenter, this.radius * 2, this.radius * 2);
+
+  //   ctx.translate(this.pos[0], this.pos[1]);
+  //   ctx.rotate(Math.PI * this.rotation * -1 / 180);
+  //   ctx.translate(this.pos[0] * -1, this.pos[1] * -1);
+  // }
   
 })(this);

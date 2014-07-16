@@ -26,22 +26,13 @@
     this.rotation += this.rotateSpeed;
   };
 
-
-  
   Asteroid.prototype.draw = function(ctx) {
-
-    var xCenter = this.pos[0] - (this.radius / 2);
-    var yCenter = this.pos[1] - (this.imageHeight / 2); 
-    ctx.translate(this.pos[0], this.pos[1]);
-    ctx.rotate(Math.PI * this.rotation / 180);
-    ctx.translate(this.pos[0] * -1, this.pos[1] * -1);
-
-    ctx.drawImage(this.img, this.xImg, this.yImg, 60, 55, xCenter, yCenter, this.radius * 2, this.radius * 2);
-
-    ctx.translate(this.pos[0], this.pos[1]);
-    ctx.rotate(Math.PI * this.rotation * -1 / 180);
-    ctx.translate(this.pos[0] * -1, this.pos[1] * -1);
-  }
+    this.drawImg(ctx, {
+      imageWidth: 60,
+      imageHeight: 55,
+      stretchX: this.radius * 2,
+      stretchY: this.radius * 2})
+  };
 
   Asteroid.prototype.randomAsteroid = function (dimX, dimY) {
     var x = Math.floor(Math.random() * dimX);
