@@ -9,9 +9,9 @@
     this.xImg = 40;
     this.yImg = 0;
     this.imageHeight = 40;
+    this.imageWidth = 39
   };
 
-  Ship.WIDTH = 39;
   Ship.MAX_SPEED = 12;
   
   Ship.inherits(Asteroids.MovingObject);
@@ -26,16 +26,19 @@
   
   Ship.prototype.turnLeft = function() {
     this.xImg = 0;
+    this.imageWidth = 39
     this.rotation -= Ship.turnSpeed;
   }
 
   Ship.prototype.turnRight = function() {
     this.xImg = 80;
+    this.imageWidth = 35;
     this.rotation += Ship.turnSpeed;
   }
 
   Ship.prototype.forwardImage = function() {
     this.xImg = 40;
+    this.imageWidth = 39
   }
   
   Ship.prototype.power = function(impulse) {
@@ -65,7 +68,7 @@
 
   Ship.prototype.draw = function(ctx) {
     this.drawImg(ctx, {
-      imageWidth: Ship.WIDTH,
+      imageWidth: this.imageWidth,
       imageHeight: this.imageHeight,
       stretchX: 60,
       stretchY: 60
