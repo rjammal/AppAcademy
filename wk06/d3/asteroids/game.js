@@ -24,7 +24,7 @@
   Game.prototype.addAsteroids = function(num){
     for(var i = 0; i < num; i++){
       var asteroid = Asteroids.Asteroid.prototype.randomAsteroid(this.DIM_X, this.DIM_Y);
-      if (this.ship.distance(asteroid) < 100) {
+      if (this.ship.distance(asteroid) < 200) {
         i--; //redo if it spawns too close to the ship
       } else {
         this.asteroids.push(asteroid);

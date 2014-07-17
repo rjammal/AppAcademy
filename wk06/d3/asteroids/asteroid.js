@@ -4,15 +4,10 @@
   
   
   var Asteroid = Asteroids.Asteroid = function(pos, vel, radius, color) {
-    // this.COLOR = '#339900';
     this.radius = 40;
-    this.imageHeight = 50;
+    this.imageHeight = 40;
     this.rotation = 0;
     this.rotateSpeed = Math.random() * 3 - 1.5;
-
-    var img = new Image();
-    img.src = 'shipImage.gif';
-    this.img = img; 
 
     this.xImg = 0;
     this.yImg = 240;
@@ -28,10 +23,11 @@
 
   Asteroid.prototype.draw = function(ctx) {
     this.drawImg(ctx, {
-      imageWidth: 60,
+      imageWidth: 55,
       imageHeight: 55,
       stretchX: this.radius * 2,
-      stretchY: this.radius * 2})
+      stretchY: this.radius * 2
+    })
   };
 
   Asteroid.prototype.randomAsteroid = function (dimX, dimY) {

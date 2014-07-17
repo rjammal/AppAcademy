@@ -9,6 +9,10 @@
     this.vel = vel;
     this.radius = radius;
     this.color = color;
+
+    var img = new Image();
+    img.src = 'shipImage.gif';
+    this.img = img; 
   };
   
   MovingObject.prototype.draw = function(ctx) {
@@ -50,9 +54,8 @@
         stretchX = options.stretchX || options.imageWidth, 
         stretchY = options.stretchY || options.imageHeight;
 
-    var xCenter = this.pos[0] - (imageWidth / 2);
-    var yCenter = this.pos[1] - (imageHeight / 2); 
-
+    var xCenter = this.pos[0] - (stretchX / 2);
+    var yCenter = this.pos[1] - (stretchY / 2); 
     ctx.translate(this.pos[0], this.pos[1]);
     ctx.rotate(Math.PI * this.rotation / 180);
     ctx.translate(this.pos[0] * -1, this.pos[1] * -1);
@@ -70,20 +73,5 @@
     ctx.rotate(Math.PI * this.rotation * -1 / 180);
     ctx.translate(this.pos[0] * -1, this.pos[1] * -1);
   }; 
-
-  // Asteroid.prototype.draw = function(ctx) {
-
-  //   var xCenter = this.pos[0] - (this.radius / 2);
-  //   var yCenter = this.pos[1] - (this.imageHeight / 2); 
-  //   ctx.translate(this.pos[0], this.pos[1]);
-  //   ctx.rotate(Math.PI * this.rotation / 180);
-  //   ctx.translate(this.pos[0] * -1, this.pos[1] * -1);
-
-  //   ctx.drawImage(this.img, this.xImg, this.yImg, 60, 55, xCenter, yCenter, this.radius * 2, this.radius * 2);
-
-  //   ctx.translate(this.pos[0], this.pos[1]);
-  //   ctx.rotate(Math.PI * this.rotation * -1 / 180);
-  //   ctx.translate(this.pos[0] * -1, this.pos[1] * -1);
-  // }
   
 })(this);

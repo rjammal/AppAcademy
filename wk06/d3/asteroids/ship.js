@@ -5,10 +5,6 @@
   var Ship = Asteroids.Ship = function(pos, vel) {
     Asteroids.MovingObject.call(this, pos, vel, 30, '#FF00FF');
     this.rotation = 0;
-    
-    var img = new Image();
-    img.src = 'shipImage.gif';
-    this.img = img; 
 
     this.xImg = 40;
     this.yImg = 0;
@@ -72,7 +68,8 @@
       imageWidth: Ship.WIDTH,
       imageHeight: this.imageHeight,
       stretchX: 60,
-      stretchY: 60})
+      stretchY: 60
+    })
   };
 
   Ship.prototype.slowDown = function() {
@@ -84,11 +81,11 @@
   }
   
   Ship.prototype.fireBullet = function() {
-    var bulletSpeed = 10;
-    var bulletVel = [headingVec(this.rotation)[0]*bulletSpeed,
-                     headingVec(this.rotation)[1]*bulletSpeed];
+    var bulletSpeed = 8;
+    var bulletVel = [headingVec(this.rotation)[0]*bulletSpeed + this.vel[0],
+                     headingVec(this.rotation)[1]*bulletSpeed + this.vel[1]];
     var bulletPos = [this.pos[0], this.pos[1]];
-    return new Asteroids.Bullet(bulletPos, bulletVel);
+    return new Asteroids.Bullet(bulletPos, bulletVel, this.rotation);
   };
   
 })(this);
