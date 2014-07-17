@@ -1,0 +1,11 @@
+<h2><%= feed.escape("title") %></h2>
+
+<h3>Entries</h3>
+
+<button id="refresh">Refresh</button>
+
+<ul id="#entries">
+  <% feed.entries().each(function (entry) { %>
+    <%= new NewReader.Views.EntryShowView({entry: entry}).render().$el.prop("outerHTML") %>
+  <% }) %>
+</ul>
