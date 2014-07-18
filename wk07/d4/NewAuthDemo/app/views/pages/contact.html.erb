@@ -1,0 +1,78 @@
+<h1>Contact Us</h1>
+
+<div class="container">
+  <div class="wrapper">
+    <div class="row">
+      <div class="col-xs-6">
+        <div id="alert-box" role="alert">
+        </div>
+        <form>
+          <div class="form-group">
+            <label for="email-box">Email:</label>
+            <input
+              id="email-box"
+              class="form-control"
+              type="text">
+          </div>
+          <div class="form-group">
+            <label for="body-box">Tell us about it:</label>
+            <textarea id="body-box" class="form-control"></textarea>
+          </div>
+      
+          <input type="button" value="Submit" id="contact-submit" class="btn btn-primary">
+        </form>
+      </div>
+  
+      <div class="col-xs-6">
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Comm Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Deanna Troi</td>
+              <td>71.203.654</td>
+            </tr>
+            <tr>
+              <td>Kira Nerys</td>
+              <td>89.784.445</td>
+            </tr>
+            <tr>
+              <td>Data</td>
+              <td>71.633.147</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var $submit = $('#contact-submit');
+  $submit.click(function() {
+    $alert = $('#alert-box')
+    $alert.html('').removeClass();
+    $(".form-group").removeClass('has-error');
+    
+    if($('#email-box').val() === ''){
+      $('#email-box').parent().addClass('has-error');
+      $alert.addClass('alert alert-danger');
+      $alert.append("The email can't be blank <br>");
+    }
+    if($('#body-box').val() === ''){
+      $('#body-box').parent().addClass('has-error');
+      $alert.addClass('alert alert-danger');
+      $alert.append("The body can't be blank");
+    }
+    
+    if(!$alert.hasClass('alert')) {
+      $alert.addClass('alert alert-success');
+      $alert.append("Message sent!");
+    }
+  })
+</script>

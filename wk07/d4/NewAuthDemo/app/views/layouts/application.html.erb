@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NewAuthDemo</title>
+    <%= stylesheet_link_tag 'application' %>
+    <%= javascript_include_tag 'application' %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <ul class="nav nav-pills" role="tablist">
+            <li><a href="../pages/home">Home</a></li>
+            <li><a href="../pages/about">About</a></li>
+            <li><a href="../pages/contact">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <ul class="nav nav-pills navbar-right">
+        <% if signed_in? %>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+            <%= current_user.username %>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li><%= link_to "Profile", user_url(current_user) %></li>
+            <li><a href="#">Account Settings</a></li>
+            <li><%= link_to "Sign Out", session_url, :method => :delete%></li>
+          </ul>
+        </div>
+        <% else %>
+       
+          <li><%= link_to "Sign In", "#", "data-toggle" => "modal", "data-target" => "#myModal" %></li>
+          <li><%= link_to "Sign up", new_user_url %></li>
+      
+        <% end %>
+        </ul>
+        
+      </div>
+    </nav>
+    
+    <div class="container">
+      <%= yield %>
+    </div>
+    
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <%= render "sign_in" %>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    
+  </body>
+</html>
